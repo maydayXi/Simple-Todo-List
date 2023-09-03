@@ -19,9 +19,13 @@
     </thead>
     <tbody>
         <tr>
-            <td>2023-09-03</td>
+            <td rowspan="2">2023-09-03</td>
             <td>V 0.0.1</td>
             <td>Init commit</td>
+        </tr>
+        <tr>
+            <td>V 0.0.2</td>
+            <td>Add gh-pages base path</td>
         </tr>
     </tbody>
 </table>
