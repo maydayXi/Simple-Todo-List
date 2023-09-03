@@ -3,11 +3,49 @@
 @tailwind utilities;
 
 :root {
-  position: relative;
-  box-sizing: border-box;
+    /* colors */
+    --color-main-hex: #ffd370;
+    --color-white-hex: #ffffff;
+    --color-btn-bgc-hex: #333333;
+    --color-text-invalid: #d87355;
+
+    /* padding */
+    --padding-btn: 12px 48px;
+    --padding-input: 12px 16px;
+
+    /* border-radius */
+    --border-radius-base: 10px;
+}
+
+* {
+    font-family: "American Typewriter", "Apple LiGothic", "Microsoft JhengHei";
+    box-sizing: border-box;
+    position: relative;
+    /* border: 1px solid #000 !important; */
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-main-hex);
+}
+
+input {
+    padding: var(--padding-input);
+    border-radius: var(--border-radius-base);
+}
+
+input:focus-visible {
+    outline: 2px solid var(--color-btn-bgc-hex);
+}
+
+.text-invalid {
+    color: var(--color-text-invalid);
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }

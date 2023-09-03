@@ -31,5 +31,19 @@
             <td>V 0.0.3</td>
             <td>Add tailwind css</td>
         </tr>
+        <tr>
+            <td rowspan="4">2023-09-04</td>
+            <td rowspan="4">V 0.1.0</td>
+            <td>New Feature：Login validation</td>
+        </tr>
+        <tr>
+            <td>Add login form：LoginForm.jsx, login-form.css</td>
+        </tr>
+        <tr>
+            <td>Add InvalidText.jsx form validate input<td>
+        </tr>
+        <tr>
+            <td>Add sweetalert2</td>
+        </tr>
     </tbody>
 </table>

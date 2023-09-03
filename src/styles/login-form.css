@@ -1,0 +1,10 @@
+#btnLogin {
+    background-color: var(--color-btn-bgc-hex);
+    padding: var(--padding-btn);
+    border-radius: var(--border-radius-base);
+    color: var(--color-white-hex);
+}
+
+#btnSignIn {
+    color: var(--color-btn-bgc-hex);
+}
