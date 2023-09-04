@@ -45,5 +45,19 @@
         <tr>
             <td>Add sweetalert2</td>
         </tr>
+        <tr>
+            <td rowspan="4">2023-09-05</td>
+            <td rowspan="4">V 0.1.3</td>
+            <td>Add FormField component for application</td>
+        </tr>
+        <tr>
+            <td>Extract LoginForm label and input into FormField</td>
+        </tr>
+        <tr>
+            <td>Update App layout</td>
+        </tr>
+        <tr>
+            <td>Extract button style with btn-primary and btn-secondary</td>
+        </tr>
     </tbody>
 </table>

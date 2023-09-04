@@ -39,13 +39,24 @@ input:focus-visible {
     outline: 2px solid var(--color-btn-bgc-hex);
 }
 
-.text-invalid {
-    color: var(--color-text-invalid);
-}
-
 #root {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+}
+
+.text-invalid {
+    color: var(--color-text-invalid);
+}
+
+.btn-primary {
+    background-color: var(--color-btn-bgc-hex);
+    padding: var(--padding-btn);
+    border-radius: var(--border-radius-base);
+    color: var(--color-white-hex);
+}
+
+.btn-secondary {
+    color: var(--color-btn-bgc-hex);
 }
