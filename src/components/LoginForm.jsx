@@ -23,7 +23,12 @@ const loginInputs = [
     }
 ];
 
-const LoginForm = ({toggleLogin}) => {
+/**
+ * LoginForm component
+ * @param {object} param0 toggle login form method and login state(force form field error reset)
+ * @returns Login form
+ */
+const LoginForm = ({toggleLogin, login}) => {
     const [form, setForm] = useState({
         email: "",
         password: ""
@@ -34,7 +39,7 @@ const LoginForm = ({toggleLogin}) => {
      * Toggle component with sign in
      * @returns {null}
      */
-    const handleSignIn = () => toggleLogin(false);
+    const handleSignUp = () => toggleLogin(false);
 
     const updateForm = field => {
         setForm(oldForm => ({
@@ -67,25 +72,28 @@ const LoginForm = ({toggleLogin}) => {
                     });
                 }
             })();
+        } else {
+            !form.email 
+                ? Swal.fire("Oops", "請輸入 Email", "error") 
+                : Swal.fire("Oops", "請輸入密碼", "error");
         }
     };
 
     return (
         <div id="loginForm" className='flex flex-col flex-1 justify-evenly items-center'>
             <h1 className='text-2xl mt-4'>最實用的線上代辦事項服務</h1>
-            {loginInputs.map((input, i) => {
+            {loginInputs.map(input => {
                 const { label, ...rest } = input;
-
                 return (
-                    <div className="input-group w-full" key={i}>
-                        <FormField inputProps={rest} label={label} handleForm={updateForm} />
+                    <div className="input-group w-full" key={input.id}>
+                        <FormField inputProps={rest} label={label} handleForm={updateForm} login={login} />
                     </div>
                 );
             })}
             <button className='w-3/6 btn-primary' onClick={handleLogin}>
                 登入
             </button>
-            <button className='w-3/6 btn-secondary' onClick={handleSignIn} >
+            <button className='w-3/6 btn-secondary' onClick={handleSignUp} >
                 註冊帳號
             </button>
         </div>
@@ -93,7 +101,8 @@ const LoginForm = ({toggleLogin}) => {
 };
 
 LoginForm.propTypes = {
-    toggleLogin: PropTypes.func.isRequired
+    toggleLogin: PropTypes.func.isRequired,
+    login: PropTypes.bool
 };
 
 export default LoginForm;

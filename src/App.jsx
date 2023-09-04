@@ -18,7 +18,7 @@ function App() {
                     <div><img src={TodoImg} alt="todo" className='w-full' /></div>
                 </div>
                 <div className="w-2/6 flex">
-                    { isLogin ? <LoginForm toggleLogin={toggleLogin} /> : <SignUpForm toggleLogin={toggleLogin} /> }
+                    { isLogin ? <LoginForm toggleLogin={toggleLogin} login={isLogin} /> : <SignUpForm toggleLogin={toggleLogin} login={!isLogin} /> }
                 </div>
             </div>
         </div>

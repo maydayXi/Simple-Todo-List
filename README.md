@@ -46,7 +46,7 @@
             <td>Add sweetalert2</td>
         </tr>
         <tr>
-            <td rowspan="4">2023-09-05</td>
+            <td rowspan="7">2023-09-05</td>
             <td rowspan="4">V 0.1.3</td>
             <td>Add FormField component for application</td>
         </tr>
@@ -58,6 +58,16 @@
         </tr>
         <tr>
             <td>Extract button style with btn-primary and btn-secondary</td>
+        </tr>
+        <tr>
+            <td colspan="3">V 0.2.0</td>
+            <td>New Features：Add Sign up validation</td>
+        </tr>
+        <tr>
+            <td>Add login prop to LoginForm for reset FormField error.</td>
+        </tr>
+        <tr>
+            <td>Update LoginForm：update handle function name, add validate alert</td>
         </tr>
     </tbody>
 </table>
