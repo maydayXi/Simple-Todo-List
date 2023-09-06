@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import PropTypes from 'prop-types';
 import axios from "axios";
 import Swal from 'sweetalert2'
 import FormField from "./FormField.jsx";
+import { useNavigate } from "react-router-dom";
 
 const { VITE_APP_API, VITE_APP_API_SIGN_IN } = import.meta.env;
 
@@ -28,18 +28,25 @@ const loginInputs = [
  * @param {object} param0 toggle login form method and login state(force form field error reset)
  * @returns Login form
  */
-const LoginForm = ({toggleLogin, login}) => {
+const SignInForm = () => {
+    const navigate = useNavigate();
+
+    const [resetError, setResetError] = useState(true);
     const [form, setForm] = useState({
         email: "",
         password: ""
     });
+
     useEffect(() => { document.title = "Sign In - Todo List"; });
 
     /**
      * Toggle component with sign in
      * @returns {null}
      */
-    const handleSignUp = () => toggleLogin(false);
+    const handleSignUp = () => {
+        setResetError(true);
+        navigate("/sign-up");
+    }
 
     const updateForm = field => {
         setForm(oldForm => ({
@@ -67,7 +74,7 @@ const LoginForm = ({toggleLogin, login}) => {
                         text: status == 404 ? `User ${statusText}` : message[0]
                     }).then(() => {
                         if (status == 404) {
-                            toggleLogin(false);
+                            return;
                         }
                     });
                 }
@@ -86,7 +93,7 @@ const LoginForm = ({toggleLogin, login}) => {
                 const { label, ...rest } = input;
                 return (
                     <div className="input-group w-full" key={input.id}>
-                        <FormField inputProps={rest} label={label} handleForm={updateForm} login={login} />
+                        <FormField inputProps={rest} label={label} handleForm={updateForm} resetError={resetError} />
                     </div>
                 );
             })}
@@ -100,9 +107,4 @@ const LoginForm = ({toggleLogin, login}) => {
     );
 };
 
-LoginForm.propTypes = {
-    toggleLogin: PropTypes.func.isRequired,
-    login: PropTypes.bool
-};
-
-export default LoginForm;
+export default SignInForm;

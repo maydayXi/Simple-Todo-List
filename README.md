@@ -69,5 +69,25 @@
         <tr>
             <td>Update LoginForm：update handle function name, add validate alert</td>
         </tr>
+        <tr>
+            <td rowspan="6">2023-09-07</td>
+            <td rowspan="6">V 0.2.5</td>
+            <td>Add React router：set SignInForm and SignUpForm path into router</td>
+        </tr>
+        <tr>
+            <td>Add Auth page：Extract App children into Auth page</td>
+        </tr>
+        <tr>
+            <td>Add Content.jsx layout</td>
+        </tr>
+        <tr>
+            <td>Rename LoginForm.jsx with SignInForm.jsx</td>
+        </tr>
+        <tr>
+            <td>Add Todo page</td>
+        </tr>
+        <tr>
+            <td>Update reset field error method</td>
+        </tr>
     </tbody>
 </table>

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import FormField from './FormField';
 
@@ -21,7 +21,11 @@ const signUpInputs = [
  * @param {object} param0 Sign up form props contain toggle form method and form state(force form field error reset)
  * @returns Sign up form
  */
-const SignUpForm = ({toggleLogin, login}) => {
+const SignUpForm = () => {
+    const navigate = useNavigate();
+
+    const [resetError, setResetError] = useState(true);
+
     /**
      * form value object
      */
@@ -33,10 +37,11 @@ const SignUpForm = ({toggleLogin, login}) => {
     });
 
     const handleLogin = () => {
-        toggleLogin(true);
         setForm({
             email: "", nickname: "", password: "", passwordConfirm: ""
         });
+        setResetError(true);
+        navigate("/sign-in");
     };
 
     /**
@@ -65,11 +70,15 @@ const SignUpForm = ({toggleLogin, login}) => {
                             title: statusText,
                             text: `${user} sign up success`
                         }).then(() => {
-                            //return axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, )
+                            const {email, password} = form;
+                            return axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, {
+                                email, password
+                            });
+                        }).then(response => {
+                            console.log(response);
                         });
                     } catch (err) {
                         const { code, response } = err;
-                        console.log(err);
                         const { data } = response;
                         const { message } = data;
                         Swal.fire({
@@ -77,7 +86,7 @@ const SignUpForm = ({toggleLogin, login}) => {
                             title: code,
                             text: message
                         }).then(() => {
-                            if(message == "用戶已存在") toggleLogin(true);
+                            if(message == "用戶已存在") return;
                         });
                     }
                 })()
@@ -96,7 +105,7 @@ const SignUpForm = ({toggleLogin, login}) => {
                 const { label, ...rest } = input;
                 return (
                     <div className="input-group w-full" key={input.id}>
-                        <FormField inputProps={rest} label={label} handleForm={updateForm} login={login} />
+                        <FormField inputProps={rest} label={label} handleForm={updateForm} resetError={resetError} />
                     </div>
                 )
             })}
@@ -108,11 +117,6 @@ const SignUpForm = ({toggleLogin, login}) => {
             </button>
         </div>
     </>);
-};
-
-SignUpForm.propTypes = {
-    toggleLogin: PropTypes.func.isRequired,
-    login: PropTypes.bool
 };
 
 export default SignUpForm;

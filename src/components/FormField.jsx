@@ -17,7 +17,7 @@ const formError = {
  * @param {object} param0 input id, name, type, placeholder, label text and form handler
  * @returns label and input
  */
-const FormField = ({inputProps, label, handleForm, login}) => {
+const FormField = ({inputProps, label, handleForm, resetError}) => {
     const {id, name, type, placeholder} = inputProps;
     const [value, setValue] = useState("");
 
@@ -26,9 +26,8 @@ const FormField = ({inputProps, label, handleForm, login}) => {
     }, [value]);
 
     useEffect(() => {
-        // reset form error
-        if(login) Object.keys(formError).forEach(key => formError[key] = false);
-    }, [login]);
+        if(resetError) Object.keys(formError).forEach(key => formError[key] = !resetError)
+    }, [resetError])
 
     const handleInput = e => {
         formError[e.target.name] = !e.target.value;
@@ -50,7 +49,7 @@ FormField.propTypes = {
     inputProps: PropTypes.object.isRequired,
     label: PropTypes.string.isRequired,
     handleForm: PropTypes.func.isRequired,
-    login: PropTypes.bool.isRequired
+    resetError: PropTypes.bool.isRequired
 };
 
 export default FormField;
