@@ -60,7 +60,7 @@
             <td>Extract button style with btn-primary and btn-secondary</td>
         </tr>
         <tr>
-            <td colspan="3">V 0.2.0</td>
+            <td rowspan="3">V 0.2.0</td>
             <td>New Features：Add Sign up validation</td>
         </tr>
         <tr>
