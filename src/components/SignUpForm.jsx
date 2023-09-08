@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import FormField from './FormField';
 
-const { VITE_APP_API, VITE_APP_API_SIGN_IN, VITE_APP_API_SIGN_UP } = import.meta.env;
+const { VITE_APP_API, VITE_APP_API_SIGN_UP } = import.meta.env;
 
 /**
  * Sign up form input properties array
@@ -23,7 +23,6 @@ const signUpInputs = [
  */
 const SignUpForm = () => {
     const navigate = useNavigate();
-
     const [resetError, setResetError] = useState(true);
 
     /**
@@ -36,6 +35,9 @@ const SignUpForm = () => {
         confirmPassword: ""
     });
 
+    /**
+     * navigate to sign in page.
+     */
     const handleLogin = () => {
         setForm({
             email: "", nickname: "", password: "", passwordConfirm: ""
@@ -55,38 +57,35 @@ const SignUpForm = () => {
         }));
     };
 
+    /**
+     * Handle sign up event
+     */
     const handleSignUp = () => {
         if(Object.values(form).every(field => field)) {
             form.confirmPassword == form.password 
                 ? (async () => {
                     try {
-                        const response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_UP}`, form);
+                        let response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_UP}`, form);
                         const { statusText, config } = response;
                         const { data } = config;
                         const request = JSON.parse(data);
                         const user = request.nickname;
-                        Swal.fire({
+                        const result = await Swal.fire({
                             icon: "success",
                             title: statusText,
-                            text: `${user} sign up success`
-                        }).then(() => {
-                            const {email, password} = form;
-                            return axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, {
-                                email, password
-                            });
-                        }).then(response => {
-                            console.log(response);
+                            text: `${user} sign up success please login again`
                         });
+
+                        if (result) navigate("/todo");
+
                     } catch (err) {
                         const { code, response } = err;
                         const { data } = response;
                         const { message } = data;
-                        Swal.fire({
+                        await Swal.fire({
                             icon: "error",
                             title: code,
                             text: message
-                        }).then(() => {
-                            if(message == "用戶已存在") return;
                         });
                     }
                 })()
@@ -97,6 +96,8 @@ const SignUpForm = () => {
                 .join("")}`, "error");
         }
     };
+
+    useEffect(() => { document.title = "Sign Up"; })
 
     return (<>
         <div className="flex flex-col justify-between items-center">

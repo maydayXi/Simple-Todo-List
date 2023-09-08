@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2'
 import FormField from "./FormField.jsx";
 import { useNavigate } from "react-router-dom";
+import { TodoContext } from "./TodoProvider.jsx";
 
 const { VITE_APP_API, VITE_APP_API_SIGN_IN } = import.meta.env;
 
@@ -30,6 +31,7 @@ const loginInputs = [
  */
 const SignInForm = () => {
     const navigate = useNavigate();
+    const { setToken, setUserName } = useContext(TodoContext);
 
     const [resetError, setResetError] = useState(true);
     const [form, setForm] = useState({
@@ -63,20 +65,27 @@ const SignInForm = () => {
             (async () => {
                 try {
                     const response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, form);
-                    console.log(response);
+                    const { data } = response;
+                    const { nickname, token } = data;
+                    setToken(token);
+                    setUserName(nickname); 
+                    navigate("/todo");
                 } catch(err) {
                     const { response } = err;
                     const { status, statusText, data } = response;
                     const { message } = data;
-                    Swal.fire({
+                    const result = await Swal.fire({
                         icon: "error",
                         title: statusText,
                         text: status == 404 ? `User ${statusText}` : message[0]
-                    }).then(() => {
-                        if (status == 404) {
-                            return;
-                        }
                     });
+                    
+                    if(result) {
+                        if (status == 404) {
+                            await Swal.fire("Sign In", "You need sign up a new account", "info");
+                            navigate("/sign-up");
+                        }
+                    }
                 }
             })();
         } else {
@@ -88,7 +97,7 @@ const SignInForm = () => {
 
     return (
         <div id="loginForm" className='flex flex-col flex-1 justify-evenly items-center'>
-            <h1 className='text-2xl mt-4'>最實用的線上代辦事項服務</h1>
+            <h1 className='text-2xl mt-4'>最實用的線上待辦事項服務</h1>
             {loginInputs.map(input => {
                 const { label, ...rest } = input;
                 return (

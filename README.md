@@ -89,5 +89,16 @@
         <tr>
             <td>Update reset field error method</td>
         </tr>
+        <tr>
+            <td rowspan="3">2023-09-08</td>
+            <td rowspan="3">V 0.3.0</td>
+            <td>New Features：Add sign out, sign in and checkout for user </td>
+        </tr>
+        <tr>
+            <td>Add TodoProvider.jsx</td>
+        </tr>
+        <tr>
+            <td>Update Todo layout and style</td>
+        </tr>
     </tbody>
 </table>
