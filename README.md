@@ -114,5 +114,16 @@
         <tr>
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
+        <tr>
+            <td rowspan="3">2023-09-10</td>
+            <td rowspan="3">V 0.4.5</td>
+            <td>New Feature：Add todo item into todo list</td>
+        </tr>
+        <tr>
+            <td>Show todo list</td>
+        </tr>
+        <tr>
+            <td>Add todo list tab and style</td>
+        </tr>
     </tbody>
 </table>

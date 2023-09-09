@@ -51,7 +51,7 @@ const Todo = () => {
                 setUserName("");
                 navigate("/sign-in");
             } catch(error) {
-                catchError(error);
+                await catchError(error);
                 setToken("");
                 setUserName("");
                 navigate("/sign-in");

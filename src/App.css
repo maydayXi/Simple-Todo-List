@@ -25,6 +25,33 @@
 
 .input-todo {
     border-radius: var(--border-radius-base);
-    background-color: var(--color-white);
+    background-color: var(--color-white-hex);
     box-shadow: var(--size-shadow) var(--color-shadow-hex);
+}
+
+.input-todo .btn-plus svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2px;
+}
+
+.todo-list {
+    border-radius: var(--border-radius-base);
+    background-color: var(--color-white-hex);
+    box-shadow: var(--size-shadow) var(--color-shadow-hex);
+    overflow: hidden;
+}
+
+.todo-tab {
+    height: 52px;
+}
+
+.todo-tab button {
+    color: var(--color-text-secondary-hex);
+    border-radius: none;
+}
+
+.todo-tab .active {
+    color: var(--color-text-primary-hex);
+    border-bottom: 2px solid var(--color-text-primary-hex);
 }
