@@ -115,7 +115,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="14">2023-09-10</td>
+            <td rowspan="16">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -161,6 +161,13 @@
         </tr>
         <tr>
             <td>Update finished item style.</td>
+        </tr>
+        <tr>
+            <td>V 0.9.0</td>
+            <td>Extract List component from TodoList.jsx</td>
+        </tr>
+        <tr>
+            <td>Update todo list style</td>
         </tr>
     </tbody>
 </table>
