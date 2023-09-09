@@ -17,3 +17,14 @@
         #FFFFFF 94.32%
     );
 }
+
+.todo-container {
+    height: 600px;
+    min-height: 500px;
+}
+
+.input-todo {
+    border-radius: var(--border-radius-base);
+    background-color: var(--color-white);
+    box-shadow: var(--size-shadow) var(--color-shadow-hex);
+}

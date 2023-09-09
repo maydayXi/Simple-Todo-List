@@ -100,5 +100,19 @@
         <tr>
             <td>Update Todo layout and style</td>
         </tr>
+        <tr>
+            <td rowspan="4">2023-09-09</td>
+            <td rowspan="4">V 0.3.5</td>
+            <td>Add TodoList.jsx and empty svg</td>
+        </tr>
+        <tr>
+            <td>Update todo page style</td>
+        </tr>
+        <tr>
+            <td>Add react-icons library</td>
+        </td>
+        <tr>
+            <td>Fix：sign up finish, redirect to sign in page</td>
+        </tr>
     </tbody>
 </table>

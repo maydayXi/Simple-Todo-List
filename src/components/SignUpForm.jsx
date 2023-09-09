@@ -76,7 +76,8 @@ const SignUpForm = () => {
                             text: `${user} sign up success please login again`
                         });
 
-                        if (result) navigate("/todo");
+                        // redirect to sign in page
+                        if (result) navigate("/sign-in");
 
                     } catch (err) {
                         const { code, response } = err;

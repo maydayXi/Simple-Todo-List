@@ -1,17 +1,36 @@
 import { useContext, useEffect } from "react";
-import Content from "../layout/Content";
-import LogoText from '../assets/logo-text.svg';
 import { TodoContext } from '../components/TodoProvider.jsx';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import Content from "../layout/Content";
+import LogoText from '../assets/logo-text.svg';
+import TodoList from "../components/TodoList.jsx";
 
-const { VITE_APP_API, VITE_APP_API_CHECK_OUT, VITE_APP_API_SIGN_OUT } = import.meta.env;
+const { 
+    VITE_APP_API, 
+    VITE_APP_API_CHECK_OUT, 
+    VITE_APP_API_SIGN_OUT
+} = import.meta.env;
+
+const catchError = async (error) => {
+    const { code, response } = error;
+    const { data } = response;
+    const { message } = data;
+    await Swal.fire({
+        icon: "error",
+        title: code,
+        html: message.join("<br />")
+    });
+};
 
 const Todo = () => {
     const { userName, token, setToken, setUserName } = useContext(TodoContext);
     const navigate = useNavigate();
     
+    /**
+     * Sign out event
+     */
     const handleSignOut = () => {
         (async () => {
             try {
@@ -32,37 +51,32 @@ const Todo = () => {
                 setUserName("");
                 navigate("/sign-in");
             } catch(error) {
-                console.log(error);
-                const { code, response } = error;
-                const { data } = response;
-                const { message } = data;
-                await Swal.fire({
-                    icon: "error",
-                    title: code,
-                    html: message.join("<br />")
-                });
+                catchError(error);
+                setToken("");
+                setUserName("");
+                navigate("/sign-in");
             }
-
         })();
-
-        // setToken("");
-        // setUserName("");
     };
 
     useEffect(() => {
         document.title = "Todo List";
         (async () => {
-            const response = await axios.get(`${VITE_APP_API}/${VITE_APP_API_CHECK_OUT}`, {
-                headers: {
-                    Authorization: token
-                }
-            });
-            const { data } = response;
-            const { status } = data;
-            if (!status) handleSignOut();
-
+            try {
+                const response = await axios.get(`${VITE_APP_API}/${VITE_APP_API_CHECK_OUT}`, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                const { data } = response;
+                const { status } = data;
+                if (!status) handleSignOut();
+            } catch(error) {
+                catchError(error);
+                handleSignOut();
+            }
         })();
-    })
+    });
 
     return (
         <div className="todo">
@@ -76,7 +90,7 @@ const Todo = () => {
                 </div>
             </nav>
             <Content>
-                <div>Todo</div>
+                <TodoList />
             </Content>
         </div>
     );
