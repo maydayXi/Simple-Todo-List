@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BsPlusLg, BsCheckLg, BsSquare } from 'react-icons/bs';
+import { BsPlusLg, BsCheckLg } from 'react-icons/bs';
 import { TodoContext } from './TodoProvider.jsx';
 import PropTypes from 'prop-types';
-import { addTodo, deleteTodo, getTodoList, updateTodo } from '../utils/api.js';
+import { addTodo, deleteTodo, getTodoList, toggleTodo, updateTodo } from '../utils/api.js';
 import { showErrorDialog, showUpdateDialog } from '../utils/dialog.js';
 import Empty from '../assets/empty.svg';
 
@@ -24,7 +24,7 @@ const TodoEmpty = () => {
     );
 }
 
-const List = ({list, deleteItem, updateItem}) => {
+const List = ({list, deleteItem, updateItem, toggleItem}) => {
     const todoList = list;
     const [tab, setTab] = useState("ALL");
 
@@ -42,6 +42,11 @@ const List = ({list, deleteItem, updateItem}) => {
 
         const { isConfirmed, value } = result;
         if(isConfirmed) updateItem(id, value);
+    };
+
+    const handleChange = e => {
+        const { value } = e.target;
+        toggleItem(value);
     }
 
     return (
@@ -59,8 +64,9 @@ const List = ({list, deleteItem, updateItem}) => {
                         return (
                             <li key={id} className="todo-item py-4 flex items-center">
                                 {status 
-                                    ? <BsCheckLg className='mr-4' /> 
-                                    : <BsSquare className='mr-4 cursor-pointer' /> 
+                                    ? <BsCheckLg className='icon-check mr-4' /> 
+                                    : <input type="checkbox" className='toggle-status mr-4 cursor-pointer' 
+                                        value={id} onChange={handleChange} />
                                 }
                                 <p id={id} className="cursor-pointer" onClick={handleUpdate}>{content}</p>
                                 <button id={id} className='btn-delete absolute right-0' onClick={handleDelete}>
@@ -77,7 +83,8 @@ const List = ({list, deleteItem, updateItem}) => {
 List.propTypes = {
     list: PropTypes.array.isRequired,
     deleteItem: PropTypes.func.isRequired,
-    updateItem: PropTypes.func.isRequired
+    updateItem: PropTypes.func.isRequired,
+    toggleItem: PropTypes.func.isRequired
 };
 
 const TodoList = () => {
@@ -118,6 +125,15 @@ const TodoList = () => {
         }
     };
 
+    const toggleItem = async (id) => {
+        try {
+            await toggleTodo(token, id);
+            triggerReset();
+        } catch (error) {
+            showErrorDialog(error);
+        }
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -140,7 +156,7 @@ const TodoList = () => {
             </div>
             {!list.length 
                 ? <TodoEmpty /> 
-                : <List list={list} deleteItem={deleteItem} updateItem={updateItem} />
+                : <List list={list} deleteItem={deleteItem} updateItem={updateItem} toggleItem={toggleItem} />
             }
         </div>
     )

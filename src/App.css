@@ -60,6 +60,20 @@
     border-bottom: 1px solid var(--color-border-hex);
 }
 
+.todo-list ul .todo-item .toggle-status {
+    border-radius: calc(var(--border-radius-base) / 2);
+    border: 1px solid var(--color-border-secondary-hex);
+    width: 20px;
+    height: 20px;
+}
+
+.todo-list ul .todo-item .icon-check {
+    color: var(--color-main-hex);
+    transform: scale(1.5);
+    width: 18px;
+    stroke-width: 1px;
+}
+
 .todo-list ul .todo-item .btn-delete {
     display: none;
     font-family: "Apple LiGothic";

@@ -67,7 +67,7 @@ const deleteTodo = (token, id) => {
 
 /**
  * Update todo item with content by id.
- * @param {string} token 
+ * @param {string} token Swagger UI bearer token
  * @param {string} id Todo item identity
  * @param {string} content Todo item new content
  * @returns Update promise
@@ -90,9 +90,31 @@ const updateTodo = (token, id, content) => {
     });
 };
 
+/**
+ * Toggle todo item status
+ * @param {string} token Swagger UI bearer token
+ * @param {string} id Todo item identity
+ * @returns Toggle promise
+ */
+const toggleTodo = (token, id) => {
+    return axios.patch(`${VITE_APP_API}/${VITE_APP_API_TODO}/${id}/toggle`, {id}, {
+        headers: {
+            Authorization: token
+        }
+    }).then(response => {
+        const { data } = response;
+        const { message } = data;
+        return Swal.fire({
+            icon: "success",
+            title: message
+        });
+    });
+}
+
 export {
     getTodoList,
     addTodo,
     deleteTodo,
-    updateTodo
+    updateTodo,
+    toggleTodo
 };
