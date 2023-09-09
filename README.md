@@ -115,7 +115,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="6">2023-09-10</td>
+            <td rowspan="9">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -134,6 +134,16 @@
         </tr>
         <tr>
             <td>Extract restful api method into api.js under utils path</td>
+        </tr>
+        <tr>
+            <td rowspan="3">V 0.6.5</td>
+            <td>New Feature：Update todo item, add put method into api.js</td>
+        </tr>
+        <tr>
+            <td>Extract get todo list into api.js</td>
+        </tr>
+        <tr>
+            <td>Extract Swal method into dialog.js under utils</td>
         </tr>
     </tbody>
 </table>

@@ -3,29 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { BsPlusLg, BsCheckLg, BsSquare } from 'react-icons/bs';
 import { TodoContext } from './TodoProvider.jsx';
 import PropTypes from 'prop-types';
-import axios from 'axios';
-import { addTodo, deleteTodo } from '../utils/api.js';
-import Swal from 'sweetalert2';
+import { addTodo, deleteTodo, getTodoList, updateTodo } from '../utils/api.js';
+import { showErrorDialog, showUpdateDialog } from '../utils/dialog.js';
 import Empty from '../assets/empty.svg';
-
-const { VITE_APP_API, VITE_APP_API_TODO } = import.meta.env;
 
 const tabMapping = {
     "全部": "ALL",
     "未完成": "Pending",
     "已完成": "Finished"
 };
-
-const catchError = (error) => {
-    const { response, code } = error;
-    const { data } = response;
-    const { message } = data;
-    return Swal.fire({
-        icon: "error",
-        title: code,
-        text: message || data
-    });
-}
 
 const TodoEmpty = () => {
     return (
@@ -38,7 +24,7 @@ const TodoEmpty = () => {
     );
 }
 
-const List = ({list, deleteItem}) => {
+const List = ({list, deleteItem, updateItem}) => {
     const todoList = list;
     const [tab, setTab] = useState("ALL");
 
@@ -48,6 +34,14 @@ const List = ({list, deleteItem}) => {
     const handleDelete = e => {
         const { id } = e.target;
         deleteItem(id);
+    };
+
+    const handleUpdate = async (e) => {
+        const { id, innerText } = e.target;
+        const result = await showUpdateDialog(innerText);
+
+        const { isConfirmed, value } = result;
+        if(isConfirmed) updateItem(id, value);
     }
 
     return (
@@ -68,7 +62,7 @@ const List = ({list, deleteItem}) => {
                                     ? <BsCheckLg className='mr-4' /> 
                                     : <BsSquare className='mr-4 cursor-pointer' /> 
                                 }
-                                {content}
+                                <p id={id} className="cursor-pointer" onClick={handleUpdate}>{content}</p>
                                 <button id={id} className='btn-delete absolute right-0' onClick={handleDelete}>
                                     +
                                 </button>
@@ -82,7 +76,8 @@ const List = ({list, deleteItem}) => {
 };
 List.propTypes = {
     list: PropTypes.array.isRequired,
-    deleteItem: PropTypes.func.isRequired
+    deleteItem: PropTypes.func.isRequired,
+    updateItem: PropTypes.func.isRequired
 };
 
 const TodoList = () => {
@@ -101,7 +96,7 @@ const TodoList = () => {
             setContent("");
             triggerReset();
         } catch (error) {
-            await catchError(error);
+            await showErrorDialog(error);
         } 
     };
 
@@ -110,23 +105,26 @@ const TodoList = () => {
             await deleteTodo(token, id);
             triggerReset();
         } catch (error) {
-            console.log(error);
+            showErrorDialog(error);
+        }
+    };
+
+    const updateItem = async (id, content) => {
+        try {
+            await updateTodo(token, id, content);
+            triggerReset();
+        } catch (error) {
+            showErrorDialog(error);
         }
     };
 
     useEffect(() => {
         (async () => {
             try {
-                const response = await axios.get(`${VITE_APP_API}/${VITE_APP_API_TODO}`, {
-                    headers: {
-                        Authorization: token
-                    }
-                });
-                console.log(response);
-                const { data } = response.data
+                const data = await getTodoList(token);
                 setList(data);
             } catch(error) {
-                catchError(error);
+                showErrorDialog(error);
                 navigate("/sign-in");
             }
         })();
@@ -142,7 +140,7 @@ const TodoList = () => {
             </div>
             {!list.length 
                 ? <TodoEmpty /> 
-                : <List list={list} deleteItem={deleteItem} />
+                : <List list={list} deleteItem={deleteItem} updateItem={updateItem} />
             }
         </div>
     )
