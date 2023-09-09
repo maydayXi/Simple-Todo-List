@@ -58,6 +58,14 @@ input:focus-visible {
     color: var(--color-text-invalid-hex);
 }
 
+.text-primary {
+    color: var(--color-text-primary-hex);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary-hex);
+}
+
 .btn-primary {
     background-color: var(--color-btn-bgc-hex);
     padding: var(--padding-btn);

@@ -74,6 +74,10 @@
     stroke-width: 1px;
 }
 
+.todo-list .todo-item .item-finished {
+    text-decoration: line-through;
+}
+
 .todo-list ul .todo-item .btn-delete {
     display: none;
     font-family: "Apple LiGothic";

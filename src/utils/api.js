@@ -66,6 +66,30 @@ const deleteTodo = (token, id) => {
 };
 
 /**
+ * Delete all finished todo item.
+ * @param {string} token Swagger UI bearer token
+ * @param {Array<string>} idList Todo item id array
+ */
+const deleteFinished = (token, idList) => {
+    const deletePromiseAll = idList.map(id =>
+        axios.delete(`${VITE_APP_API}/${VITE_APP_API_TODO}/${id}`, {
+            headers: {
+                Authorization: token
+            }
+        })
+    );
+
+    Promise.all(deletePromiseAll).then(responses => {
+        const { data } = responses[0];
+        const { message } = data;
+        return Swal.fire({
+            icon: "success",
+            title: message
+        });
+    });
+}
+
+/**
  * Update todo item with content by id.
  * @param {string} token Swagger UI bearer token
  * @param {string} id Todo item identity
@@ -109,12 +133,13 @@ const toggleTodo = (token, id) => {
             title: message
         });
     });
-}
+};
 
 export {
     getTodoList,
     addTodo,
     deleteTodo,
+    deleteFinished,
     updateTodo,
     toggleTodo
 };

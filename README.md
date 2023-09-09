@@ -115,7 +115,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="12">2023-09-10</td>
+            <td rowspan="14">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -154,6 +154,13 @@
         </tr>
         <tr>
             <td>Update input check box style</td>
+        </tr>
+        <tr>
+            <td rowspan="2">V 0.8.5</td>
+            <td>New Feature：Delete all finished item.</td>
+        </tr>
+        <tr>
+            <td>Update finished item style.</td>
         </tr>
     </tbody>
 </table>
