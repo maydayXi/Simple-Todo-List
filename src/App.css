@@ -55,3 +55,18 @@
     color: var(--color-text-primary-hex);
     border-bottom: 2px solid var(--color-text-primary-hex);
 }
+
+.todo-list ul .todo-item {
+    border-bottom: 1px solid var(--color-border-hex);
+}
+
+.todo-list ul .todo-item .btn-delete {
+    display: none;
+    font-family: "Apple LiGothic";
+    transform: rotate(45deg);
+    font-size: 1.5rem;
+}
+
+.todo-list ul .todo-item:hover .btn-delete {
+    display: block;
+}

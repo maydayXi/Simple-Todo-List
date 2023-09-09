@@ -4,6 +4,7 @@ import { BsPlusLg, BsCheckLg, BsSquare } from 'react-icons/bs';
 import { TodoContext } from './TodoProvider.jsx';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { addTodo, deleteTodo } from '../utils/api.js';
 import Swal from 'sweetalert2';
 import Empty from '../assets/empty.svg';
 
@@ -37,12 +38,17 @@ const TodoEmpty = () => {
     );
 }
 
-const List = ({list, handleReset}) => {
+const List = ({list, deleteItem}) => {
     const todoList = list;
     const [tab, setTab] = useState("ALL");
 
     const className = text => text == tab ? "active" : "";
     const switchTab = e => setTab(tabMapping[e.target.innerText]);
+
+    const handleDelete = e => {
+        const { id } = e.target;
+        deleteItem(id);
+    }
 
     return (
         <div className='todo-list w-full mt-4'>
@@ -52,17 +58,20 @@ const List = ({list, handleReset}) => {
                     <button className={className("Pending")} onClick={switchTab}>未完成</button>
                     <button className={className("Finished")} onClick={switchTab}>已完成</button>
                 </div>
-                <ul className='w-full pl-8'>
+                <ul className='w-full px-8 pb-8'>
                     {todoList.map(item => {
                         const { id, content, status } = item;
 
                         return (
-                            <li id={id} key={id} className="py-4 flex items-center">
+                            <li key={id} className="todo-item py-4 flex items-center">
                                 {status 
                                     ? <BsCheckLg className='mr-4' /> 
                                     : <BsSquare className='mr-4 cursor-pointer' /> 
                                 }
                                 {content}
+                                <button id={id} className='btn-delete absolute right-0' onClick={handleDelete}>
+                                    +
+                                </button>
                             </li>
                         )
                     })}
@@ -73,7 +82,7 @@ const List = ({list, handleReset}) => {
 };
 List.propTypes = {
     list: PropTypes.array.isRequired,
-    handleReset: PropTypes.func.isRequired
+    deleteItem: PropTypes.func.isRequired
 };
 
 const TodoList = () => {
@@ -83,40 +92,39 @@ const TodoList = () => {
     const [ reset, setReset] = useState(true);
     const navigate = useNavigate();
 
+    const triggerReset = () => setReset(!reset);
+
     const handleChange = e => setContent(e.target.value);
     const handlePlus = async () => {
         try {
-            const response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_TODO}`, {content}, {
-                headers: {
-                    Authorization: token
-                }
-            });
+            await addTodo(token, content);
             setContent("");
-            const { statusText } = response;
-            await Swal.fire({
-                icon: "success",
-                title: statusText,
-                text: content
-            });
+            triggerReset();
         } catch (error) {
             await catchError(error);
         } 
     };
 
-    const handleReset = () => setReset(true);
+    const deleteItem = async (id) => {
+        try {
+            await deleteTodo(token, id);
+            triggerReset();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         (async () => {
             try {
-                if (reset) {
-                    const response = await axios.get(`${VITE_APP_API}/${VITE_APP_API_TODO}`, {
-                        headers: {
-                            Authorization: token
-                        }
-                    });
-                    const { data } = response.data
-                    setList(data);
-                }
+                const response = await axios.get(`${VITE_APP_API}/${VITE_APP_API_TODO}`, {
+                    headers: {
+                        Authorization: token
+                    }
+                });
+                console.log(response);
+                const { data } = response.data
+                setList(data);
             } catch(error) {
                 catchError(error);
                 navigate("/sign-in");
@@ -132,7 +140,10 @@ const TodoList = () => {
                     <BsPlusLg />
                 </button>
             </div>
-            {!list.length ? <TodoEmpty /> : <List list={list} handleReset={handleReset} />}
+            {!list.length 
+                ? <TodoEmpty /> 
+                : <List list={list} deleteItem={deleteItem} />
+            }
         </div>
     )
 };

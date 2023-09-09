@@ -115,7 +115,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="3">2023-09-10</td>
+            <td rowspan="6">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -124,6 +124,16 @@
         </tr>
         <tr>
             <td>Add todo list tab and style</td>
+        </tr>
+        <tr>
+            <td rowspan="3">V 0.5.5</td>
+            <td>New Feature：Delete todo item from todo list</td>
+        </tr>
+        <tr>
+            <td>Add todo item style</td>
+        </tr>
+        <tr>
+            <td>Extract restful api method into api.js under utils path</td>
         </tr>
     </tbody>
 </table>

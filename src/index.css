@@ -11,6 +11,7 @@
     --color-shadow-hex: #00000026;
     --color-text-primary-hex: var(--color-btn-bgc-hex);
     --color-text-secondary-hex: #9F9A91;
+    --color-border-hex: #e5e5e5;
 
     /* padding */
     --padding-btn: 12px 48px;
