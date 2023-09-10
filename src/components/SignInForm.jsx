@@ -1,11 +1,9 @@
-import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import Swal from 'sweetalert2'
+import { useState, useEffect, useContext, useCallback } from "react";
 import FormField from "./FormField.jsx";
 import { useNavigate } from "react-router-dom";
 import { TodoContext } from "./TodoProvider.jsx";
-
-const { VITE_APP_API, VITE_APP_API_SIGN_IN } = import.meta.env;
+import { signIn } from "../utils/api.js";
+import { showEmailEmpty, showPasswordEmpty, showRedirectToSignIn, showUserNotFoundError } from "../utils/dialog.js";
 
 const loginInputs = [
     {
@@ -39,8 +37,6 @@ const SignInForm = () => {
         password: ""
     });
 
-    useEffect(() => { document.title = "Sign In - Todo List"; });
-
     /**
      * Toggle component with sign in
      * @returns {null}
@@ -60,40 +56,40 @@ const SignInForm = () => {
     /**
      * Login event
      */
-    const handleLogin = () => {
+    const handleLogin = useCallback(() => {
         if(form.email && form.password) {
             (async () => {
                 try {
-                    const response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, form);
-                    const { data } = response;
-                    const { nickname, token } = data;
+                    const response = await signIn(form);
+                    const { nickname, token } = response;
                     setToken(token);
                     setUserName(nickname); 
                     navigate("/todo");
-                } catch(err) {
-                    const { response } = err;
-                    const { status, statusText, data } = response;
-                    const { message } = data;
-                    const result = await Swal.fire({
-                        icon: "error",
-                        title: statusText,
-                        text: status == 404 ? `User ${statusText}` : message[0]
-                    });
+                } catch(error) {
+                    const status = await showUserNotFoundError(error);
                     
-                    if(result) {
-                        if (status == 404) {
-                            await Swal.fire("Sign In", "You need sign up a new account", "info");
-                            navigate("/sign-up");
-                        }
+                    if (status == 404) {
+                        await showRedirectToSignIn();
+                        navigate("/sign-up");
                     }
                 }
             })();
         } else {
-            !form.email 
-                ? Swal.fire("Oops", "請輸入 Email", "error") 
-                : Swal.fire("Oops", "請輸入密碼", "error");
+            !form.email ? showEmailEmpty() : showPasswordEmpty();
         }
-    };
+    }, [navigate, form, setUserName, setToken]);
+
+    const handleKeyPress = useCallback(e => {
+        const { keyCode } = e;
+        if (keyCode == 13) handleLogin();
+    }, [handleLogin]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyPress);
+        return () => window.removeEventListener("keydown", handleKeyPress);
+    }, [handleKeyPress]);
+
+    useEffect(() => { document.title = "Sign In - Todo List"; });
 
     return (
         <div id="loginForm" className='flex flex-col flex-1 justify-evenly items-center'>

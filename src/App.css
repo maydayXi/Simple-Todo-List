@@ -81,6 +81,7 @@
 
 .todo-list .todo-item .item-finished {
     text-decoration: line-through;
+    cursor: default !important;
 }
 
 .todo-list ul .todo-item .btn-delete {

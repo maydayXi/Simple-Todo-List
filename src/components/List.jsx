@@ -70,11 +70,14 @@ const List = ({list, handleList}) => {
     };
 
     const handleUpdate = async (e) => {
-        const { id, innerText } = e.target;
-        const result = await showUpdateDialog(innerText);
-
-        const { isConfirmed, value } = result;
-        if(isConfirmed) updateItem(id, value);
+        const { id, innerText, dataset } = e.target;
+        const { status } = dataset
+        if (!status) {
+            const result = await showUpdateDialog(innerText);
+    
+            const { isConfirmed, value } = result;
+            if(isConfirmed) updateItem(id, value);
+        }
     };
 
     const handleChange = e => {
@@ -111,7 +114,7 @@ const List = ({list, handleList}) => {
                                                     : <input type="checkbox" className='toggle-status mr-4 cursor-pointer' 
                                                         value={id} onChange={handleChange} />
                                                 }
-                                                <p id={id} className={isFinished(status)} onClick={handleUpdate}>{content}</p>
+                                                <p id={id} data-status={status} className={isFinished(status)} onClick={handleUpdate}>{content}</p>
                                                 <button id={id} className='btn-delete absolute right-0' onClick={handleDelete}>
                                                     +
                                                 </button>

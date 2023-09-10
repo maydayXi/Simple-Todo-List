@@ -1,10 +1,9 @@
-import axios from 'axios';
+import { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { signUp } from '../utils/api';
+import { showErrorDialog, showPasswordConfirmError, showSignUpFormValidateError } from '../utils/dialog';
 import FormField from './FormField';
-
-const { VITE_APP_API, VITE_APP_API_SIGN_UP } = import.meta.env;
 
 /**
  * Sign up form input properties array
@@ -18,7 +17,6 @@ const signUpInputs = [
 
 /**
  * SignUpForm component
- * @param {object} param0 Sign up form props contain toggle form method and form state(force form field error reset)
  * @returns Sign up form
  */
 const SignUpForm = () => {
@@ -60,45 +58,36 @@ const SignUpForm = () => {
     /**
      * Handle sign up event
      */
-    const handleSignUp = () => {
+    const handleSignUp = useCallback(() => {
         if(Object.values(form).every(field => field)) {
             form.confirmPassword == form.password 
                 ? (async () => {
                     try {
-                        let response = await axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_UP}`, form);
-                        const { statusText, config } = response;
-                        const { data } = config;
-                        const request = JSON.parse(data);
-                        const user = request.nickname;
-                        const result = await Swal.fire({
-                            icon: "success",
-                            title: statusText,
-                            text: `${user} sign up success please login again`
-                        });
-
+                        const result = await signUp(form);
                         // redirect to sign in page
                         if (result) navigate("/sign-in");
-
-                    } catch (err) {
-                        const { code, response } = err;
-                        const { data } = response;
-                        const { message } = data;
-                        await Swal.fire({
-                            icon: "error",
-                            title: code,
-                            text: message
-                        });
+                    } catch (error) {
+                        console.log(error);
+                        await showErrorDialog(error);
                     }
                 })()
-                : Swal.fire("Oops", "兩次密碼輸入不一致", "error");
+                : showPasswordConfirmError();
         } else {
-            Swal.fire("Oops", `${Object.keys(form).map(key => !form[key] 
-                ? `<p class='alert-text'>請輸入：[${key}]</p>` : "")
-                .join("")}`, "error");
+            showSignUpFormValidateError(form);
         }
-    };
+    }, [form, navigate]);
 
-    useEffect(() => { document.title = "Sign Up"; })
+    const handleKeyPress = useCallback(e => {
+        const { keyCode } = e;
+        if (keyCode == 13) handleSignUp();
+    }, [handleSignUp]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyPress);
+        return () => window.removeEventListener("keydown", handleKeyPress);
+    }, [handleKeyPress]);
+
+    useEffect(() => { document.title = "Sign Up"; });
 
     return (<>
         <div className="flex flex-col justify-between items-center">

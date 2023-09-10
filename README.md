@@ -115,7 +115,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="16">2023-09-10</td>
+            <td rowspan="20">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -163,11 +163,24 @@
             <td>Update finished item style.</td>
         </tr>
         <tr>
-            <td>V 0.9.0</td>
+            <td rowspan="2">V 0.9.0</td>
             <td>Extract List component from TodoList.jsx</td>
         </tr>
         <tr>
             <td>Update todo list style</td>
+        </tr>
+        <tr>
+            <td rowspan="4">V 0.1.0</td>
+            </td>Add key press event listener into SignIn, SignUp, TodoList component</td>
+        </tr>
+        <tr>
+            <td>Extract SignIn and SignUp axios into api.js</td>
+        </tr>
+        <tr>
+            <td>Extract SignIn and SignUp Sweetalert method into dialog.js</td>
+        </tr>
+        <tr>
+            <td>Fix：Finished item update forbidden</td>
         </tr>
     </tbody>
 </table>

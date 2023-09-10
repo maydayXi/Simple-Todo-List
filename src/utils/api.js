@@ -1,7 +1,52 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const { VITE_APP_API, VITE_APP_API_TODO } = import.meta.env;
+const { 
+    VITE_APP_API, 
+    VITE_APP_API_TODO, 
+    VITE_APP_API_SIGN_UP, 
+    VITE_APP_API_SIGN_IN 
+} = import.meta.env;
+
+/**
+ * Sign in user
+ * @param {{email: string, password: string}} form 
+ * @returns Sign in promise
+ */
+const signIn = form => {
+    return axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_IN}`, form)
+        .then(response => {
+            const { data } = response;
+            const { nickname, token } = data;
+            return { nickname, token };
+        }).catch(error => {
+            throw error;
+        });
+};
+
+/**
+ * Sign up user.
+ * @typedef {{email: string, nickname: string, password: string, passwordConfirm: string}} signUpForm
+ * @param {signUpForm} form sign up form data
+ * @returns sign up promise
+ */
+const signUp = form => {
+    return axios.post(`${VITE_APP_API}/${VITE_APP_API_SIGN_UP}`, form)
+        .then(response => {
+            const { statusText, config } = response;
+            const { data } = config;
+            const request = JSON.parse(data);
+            const user = request.nickname;
+
+            return Swal.fire({
+                icon: "success",
+                title: statusText,
+                text: `${user} sign up success please login again.`
+            });
+        }).catch(error => {
+            throw error;
+        });
+};
 
 const resolveData = response => {
     const { data } = response;
@@ -136,6 +181,8 @@ const toggleTodo = (token, id) => {
 };
 
 export {
+    signIn,
+    signUp,
     getTodoList,
     addTodo,
     deleteTodo,

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BsPlusLg } from 'react-icons/bs';
 import { TodoContext } from './TodoProvider.jsx';
@@ -25,10 +25,10 @@ const TodoList = () => {
     const [ reset, setReset] = useState(true);
     const navigate = useNavigate();
 
-    const triggerReset = () => setReset(!reset);
+    const triggerReset = useCallback(() => setReset(!reset), [reset]);
 
-    const handleChange = e => setContent(e.target.value);
-    const handlePlus = async () => {
+    const handleChange = e => setContent(e.target.value.trim());
+    const handlePlus = useCallback(async () => {
         try {
             await addTodo(token, content);
             setContent("");
@@ -36,7 +36,7 @@ const TodoList = () => {
         } catch (error) {
             await showErrorDialog(error);
         } 
-    };
+    }, [token, content, triggerReset]);
 
     const deleteItem = async (id) => {
         try {
@@ -84,6 +84,16 @@ const TodoList = () => {
         toggleItem,
         deleteFinishedItems
     };
+
+    const handleKeyPress = useCallback(e => {
+        const { keyCode } = e;
+        if (keyCode == 13) handlePlus();
+    }, [handlePlus]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", handleKeyPress);
+        return () => window.removeEventListener("keydown", handleKeyPress);
+    }, [handleKeyPress])
 
     useEffect(() => {
         (async () => {
