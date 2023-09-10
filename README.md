@@ -126,7 +126,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="21">2023-09-10</td>
+            <td rowspan="22">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -196,6 +196,10 @@
         <tr>
             <td>V 1.0.1</td>
             <td>Add README.md screenshot section</td>
+        </tr>
+        <tr>
+            <td>V 1.0.2</td>
+            <td>Fix：force index redirect to sign-in page</td>
         </tr>
     </tbody>
 </table>

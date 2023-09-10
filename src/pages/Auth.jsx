@@ -1,9 +1,15 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import LogoText from '../assets/logo-text.svg';
 import Content from '../layout/Content';
 import TodoImg from '../assets/todo.svg';
+import { useEffect } from 'react';
 
 const Auth = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/sign-in");
+    }, [navigate])
     
     return (
         <Content>
