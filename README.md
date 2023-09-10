@@ -8,6 +8,17 @@
 
 [Codepen](https://codepen.io/liao/pen/mdpmXKg?editors=1010)
 
+## Screenshot 
+
+#### Sign In 
+<img src="https://i.imgur.com/VHdVuAc.png" alt="sign in" width="80%" />
+
+#### Sign Up 
+<img src="https://i.imgur.com/56vbJpf.png" alt="sign up" width="80%" />
+
+### Todo List
+<img src="https://i.imgur.com/uxqlULY.png" alt="todo list" width="80%" />
+
 ## History 
 <table>
     <thead>
@@ -115,7 +126,7 @@
             <td>Fix：sign up finish, redirect to sign in page</td>
         </tr>
         <tr>
-            <td rowspan="20">2023-09-10</td>
+            <td rowspan="21">2023-09-10</td>
             <td rowspan="3">V 0.4.5</td>
             <td>New Feature：Add todo item into todo list</td>
         </tr>
@@ -181,6 +192,10 @@
         </tr>
         <tr>
             <td>Fix：Finished item update forbidden</td>
+        </tr>
+        <tr>
+            <td>V 1.0.1</td>
+            <td>Add README.md screenshot section</td>
         </tr>
     </tbody>
 </table>
